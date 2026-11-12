@@ -1,2 +1,2 @@
-SELECT ship_mode as tipo_envio, round(avg(dias_envio),2) as tiempo_prom_envio from vw_ventas
+SELECT ship_mode as tipo_envio, round(avg(dias_envio),2) as tiempo_prom_envio from vw_pedidos
 group by tipo_envio
