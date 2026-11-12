@@ -11,6 +11,6 @@ when discount > 0.7 and discount <= 0.8 then '70-80%'
 when discount > 0.8 and discount <= 0.9 then '80-90%'
 when discount > 0.9 and discount <= 1 then '90-100%'
 end as descuento,
-avg(profit) as ganancias_promedio
+round(avg(profit),2) as ganancias_promedio
 from vw_ventas
 group by descuento order by avg(profit) desc
