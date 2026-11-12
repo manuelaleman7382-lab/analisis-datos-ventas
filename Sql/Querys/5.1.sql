@@ -1,0 +1,1 @@
+select count(order_id) as total_pedidos, count(DISTINCT(order_id)) as pedidos_unicos  from vw_pedidos
