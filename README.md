@@ -121,7 +121,38 @@ ID	Reto	Habilidad SQL
 6.5	Calcular el porcentaje que representa cada categoría sobre las ventas totales.	Subconsultas
 6.6	Identificar los meses con ventas superiores al promedio mensual.	CTE y subconsultas
 6.7	Crear un ranking de productos por ganancia dentro de cada categoría.	RANK() o ROW_NUMBER()
-7. Seguimiento del proyecto
+
+
+## Ejercicios SQL adicionales
+
+Nota: estos ejercicios se resuelven con las **tablas base** (`orders`, `order_items`, `products`, `customers`, `regions`) y no con las vistas, porque las vistas ya traen los `JOIN` hechos. Las uniones se hacen por `order_key`, `customer_id`, `product_id` y `region`. Como `order_items` tiene varias filas por pedido, al unirla con `orders` los datos del pedido se repiten en cada fila.
+
+### 7. Práctica de JOIN
+
+Objetivo: Unir varias tablas, distinguir `INNER JOIN` de `LEFT JOIN` y evitar errores comunes, como contar filas repetidas.
+
+| ID | Requisito | Resultado esperado |
+|---|---|---|
+| 7.1 | Calcular las ventas y la ganancia por gerente regional y categoría de producto. | Una fila por gerente y categoría. |
+| 7.2 | Armar una ficha por cliente con su número de pedidos, la fecha de su primer y último pedido y sus ventas totales. | Resumen por cliente. |
+| 7.3 | Listar los clientes que no hicieron ningún pedido en 2026. | Clientes inactivos en 2026. |
+| 7.4 | Calcular, por categoría, qué porcentaje de las ventas (en dinero) corresponde a pedidos devueltos. | Monto devuelto por categoría. |
+| 7.5 | Encontrar los 10 pares de subcategorías que más se compran juntas en un mismo pedido. | Ranking de combinaciones. |
+| 7.6 | Identificar los clientes que han recibido pedidos en más de una región. | Clientes multirregión. |
+
+### 8. Práctica de CTE
+
+**Objetivo:** Dividir una consulta compleja en pasos con nombre y reutilizar un resultado intermedio.
+
+| ID | Requisito | Resultado esperado |
+|---|---|---|
+| 8.1 | Calcular, por modo de envío, cuántos pedidos tardaron más que el promedio de su propio modo. | Pedidos lentos por modo de envío, con su porcentaje. |
+| 8.2 | Calcular la tasa de retención de clientes año con año: de los clientes que compraron en un año, qué porcentaje volvió a comprar al siguiente. | Retención anual. |
+
+**Pistas para resolverlo:**
+
+- **8.1:** La primera CTE calcula el promedio de días de envío por modo (usa `julianday()` para la diferencia de fechas). La consulta principal une `orders` con esa CTE por `ship_mode` y compara pedido por pedido. Para contar los pedidos lentos, `SUM(CASE WHEN ... THEN 1 ELSE 0 END)` es una buena opción.
+- **8.2:** Crea una CTE con los clientes distintos que compraron en cada año (`DISTINCT` del año y el `customer_id`). Luego únela consigo misma con la condición `b.anio = a.anio + 1`. Con un `LEFT JOIN` conservas a los clientes que no volvieron, y `COUNT(DISTINCT b.customer_id)` cuenta los retenidos. El último año no tiene un "año siguiente" en los datos, así que su retención saldría en 0 sin ser un resultado real: exclúyelo o anótalo en tu interpretación.
 
 Utilizar esta lista para llevar el control de los ejercicios completados.
 
